@@ -1,0 +1,20 @@
+{{- if .Values.createRoute }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "ocp-deployment.labels" . | nindent 4 }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Release.Name }}
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
+  wildcardPolicy: None
+{{- end }}
+
